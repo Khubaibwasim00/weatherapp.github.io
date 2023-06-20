@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js"></script>
+  
+  <title>Weather App</title>
+  <h1 id="Heading">Welcome to Weather app!</h1>
+</head>
+<body>
+  <div class="card">
+    <div class="search">
+       <input type="text" placeholder="Enter the city name" spellcheck="false" id="input">
+       <button> <img src="Images/search-icon.png"></button>
+    </div>
+    <div class="error">
+      <p>Invalid City name</p>
+    </div>
+    <div class="weather">
+      <img src="Images/rain.png" class="weather-icon">
+      <h1 class="temp">22°c</h1>
+      <h2 class="city">New York</h2>
+      <div class="details">
+        <div class="col">
+        <img src="Images/humidity.png" >   
+        <div>
+          <p class="humidity">50%</p>
+          <p>Humidity</p>
+        </div>
+        <div class="col">
+        <img src="Images/wind.png" >
+        <div>
+          <p class="wind">15km/h</p>
+          <p>Wind Speed</p>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+
+  const apiKey="cffac7de4440ddabc53491af7cdd0058";
+  const apiUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+
+  const searchBox = document.querySelector(".search  input");
+  const searchBtn = document.querySelector(".search  button");
+  const weatherIcon = document.querySelector(".weather-icon");
+
+async function checkweather(city){
+    const response = await fetch(apiUrl + city + `&appid=${apiKey}`)
+
+  if(response.status == 404){
+    document.querySelector(".error").style.display = "block";
+    document.querySelector(".weather").style.display = "none";
+  }
+  else{
+    var data = await response.json();
+
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + " °c";
+    document.querySelector(".humidity").innerHTML = data.main.humidity + " %";
+    document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+
+  if(data.weather[0].main == "Clouds"){
+    weatherIcon.src = "Images/cloud.webp"
+  }
+  else if(data.weather[0].main == "Rain" ){
+    weatherIcon.src = "Images/rain.png"
+  }
+  else if(data.weather[0].main == "Clear"){
+    weatherIcon.src = "Images/sun.webp"
+  }
+  else if(data.weather[0].main == "Drizzle"){
+    weatherIcon.src = "Images/drizzle.png"
+  }
+  else if(data.weather[0].main == "Mist"){
+    weatherIcon.src = "Images/MIST.png"
+  }
+  else if(data.weather[0].main == "Haze"){
+    weatherIcon.src = "Images/Bg1.png"
+  }
+  else if(data.weather[0].main == "Snow"){
+    weatherIcon.src = "Images/snow.png"
+  }
+
+  
+  document.querySelector(".weather").style.display = "block"
+  document.querySelector(".error").style.display = "none"
+ }
+  
+
+  }
+  const cities = [
+    'New York',
+    'Los Angeles',
+    'Chicago',
+    'Houston',
+    'Philadelphia',
+    'Phoenix',
+    'San Antonio',
+    'San Diego',
+    'Dallas',
+    'San Jose',
+    'Tokyo',
+    'Yokohama',
+    'Osaka',
+    'Nagoya',
+   'Sapporo',
+    'Kobe',
+    'Kyoto',
+    'Fukuoka',
+    'Kawasaki',
+    'Hiroshima',
+    'Beijing',
+    'Shanghai',
+    'Guangzhou',
+    'Shenzhen',
+    'Chengdu',
+    'Chongqing',
+    'Tianjin',
+    'Xian',
+    'Hangzhou',
+    'Wuhan',
+    'Istanbul',
+    'Ankara',
+    'Izmir',
+    'Bursa',
+    'Adana',
+    'Gaziantep',
+    'Antalya',
+    'Konya',
+    'Mersin',
+    'Diyarbakir',
+    'Chittagong',
+    'Dhaka',
+    'Khulna',
+    'Rajshahi',
+    'Sylhet',
+    'Barisal',
+    'Rangpur',
+    'Comilla',
+    'Narayanganj',
+    'Gazipur',    
+    'Mumbai',
+    'Delhi',
+    'Kolkata' ,
+    'Chennai' ,
+    'Bangalore',
+    'Hyderabad',
+    'Ahmedabad',
+    'Pune',
+    'Jaipur',
+    'Lucknow',
+    'Karachi',
+    'Lahore',
+    'Islamabad',
+    'Rawalpindi',
+    'Faisalabad',
+    'Multan',
+    'Hyderabad',
+    'Peshawar',
+    'Quetta',
+    'Gujranwala',
+    'Sydney, Australia',
+    'Melbourne, Australia',
+    'Auckland, New-Zealand',
+    'Brisbane, Australia',
+    'Perth, Australia',
+    'São-Paulo, Brazil',
+    'Buenos-Aires, Argentina',
+    'Rio de-Janeiro, Brazil',
+    'Lima, Peru',
+    'Bogotá, Colombia',
+    'London, United-Kingdom',
+    'Paris, France',
+    'Berlin, Germany',
+    'Rome, Italy',
+    'Madrid, Spain',
+    'Cairo, Egypt',
+    'Lagos, Nigeria',
+    'Johannesburg, South-Africa',
+    'Nairobi, Kenya',
+    'Casablanca, Morocco',
+    'Frankfurt',
+    'Sukkur',
+    'Dubai',
+    'Abu Dhabi',
+    'Makkah al Mukarramah',
+    'Madinah'
+  ];
+  
+  
+  // Function to initialize autocomplete
+  
+  function initializeAutocomplete(inputElement) {
+  const autocomplete = new Awesomplete(inputElement);
+
+  inputElement.addEventListener('input', function() {
+    const inputValue = this.value;
+    const matches = cities.filter(city => city.toLowerCase().includes(inputValue.toLowerCase()));
+    autocomplete.list = matches;
+  });
+}
+
+// Usage example
+const input = document.getElementById('input');
+initializeAutocomplete(input);
+  searchBtn.addEventListener("click", ()=>{
+    checkweather(searchBox.value);
+  })
+
+  checkweather();
+
+ </script>
+</body>
+</html>
